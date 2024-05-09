@@ -1,0 +1,47 @@
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyr)
+data(iris)
+head(iris)
+iris_long <- gather(iris, key = "Measurement", value = "Value", -Species)
+head(iris_long)
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+library(ggplot2)
+ggplot(iris_long, aes(x = Species, y = Value)) +
+  geom_boxplot() +
+  labs(title = "Boxplot of Sepal Length by Species")
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+ggplot(iris, aes(x = Petal.Length, y = Petal.Width, color = Species)) +
+  geom_point() +
+  labs(title = "Scatterplot of Petal Length vs. Petal Width")
+```
+
+### Chart C
+
+```{r}
+ggplot(iris_long, aes(x = Value, fill = Species)) +
+  geom_histogram(binwidth = 0.2, position = "identity", alpha = 0.7) +
+  labs(title = "Histogram of Sepal Length by Species", x = "Sepal Length", y = "Frequency", fill = "Species")
+```
